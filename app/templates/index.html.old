@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+
+<html style="height:100%">
+  <script src="https://open.mapquestapi.com/sdk/js/v7.0.s/mqa.toolkit.js?key=WGhjrygLwzZbpfGCVebhnFRHBroxJZGY
+"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type="text/javascript">
+
+    domain = window.location.hostname;
+
+    // An example of using the MQA.EventUtil to hook into the window load event and execute the defined
+    // function passed in as the last parameter. You could alternatively create a plain function here and
+    // have it executed whenever you like (e.g. <body onload="yourfunction">).
+ 
+    MQA.EventUtil.observe(window, 'load', function() {
+
+        // create an object for options
+        var options = {
+            elt: document.getElementById('map'),           // ID of map element on page
+          zoom: 5,                                      // initial zoom level of the map
+          latLng: {lat: 50, lng: 19},  					// center of map in latitude/longitude   { lat: 52, lng: 21 },
+            mtype: 'map',                                  // map type (map, sat, hyb); defaults to map
+            bestFitMargin: 0,                              // margin offset from map viewport when applying a bestfit on shapes
+            zoomOnDoubleClick: true                        // enable map to be zoomed in when double-clicking on map
+        };
+
+        // construct an instance of MQA.TileMap with the options object
+        window.map = new MQA.TileMap(options);
+        MQA.withModule('largezoom', function () {
+                map.addControl(new MQA.LargeZoom());
+
+            });
+            MQA.withModule('mousewheel', function () {
+                map.enableMouseWheelZoom();
+
+            });
+            loc(map);
+            //console.log("jest2");
+
+
+        });
+    function addrow(locations) {
+        var x = document.getElementById("myTable");
+        //console.log(locations.length);
+        var tableRows = x.getElementsByTagName('tr');
+        var rowCount = tableRows.length;
+        for(var i=rowCount-1;i>0;i--){
+            x.deleteRow(i);
+
+        }
+        for(var i=0;i<locations.length;i++) {
+            //console.log(locations[i].username);
+            var row = x.insertRow(1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var img = new Image();
+            if(locations[i].active > 30){
+                img = img.src='/static/img/grayDot.png';
+            }
+            else{
+                 img = img.src='/static/img/greenDot.png';
+
+
+            }
+            cell1.innerHTML ="<img src='" + img + "' width=\"12\" height=\"12\"/>";
+            cell2.innerHTML = locations[i].username;
+
+        }
+    }
+{#        $( "#addFriend" ).click(function() {#}
+{#            prompt( "Add Friend" ,"NickName");#}
+{#        });#}
+function loc(map) {
+
+    $.getJSON('https://' + domain + ':8443/last', function(locations) {
+        locations = locations["locations"];
+
+
+        addrow(locations);
+        map.removeAllShapes();
+	for(var i = 0;i<locations.length;i++) {
+        var basic = new MQA.Poi({lat: locations[i].lat, lng: locations[i].long});
+        basic.setRolloverContent(locations[i].username + "\nLast Seen:\n" + locations[i].time);
+        if (locations[i].active > 30) {
+            var icon = new MQA.Icon('/static/img/grayDot.png', 20, 20);
+        }
+        else {
+
+        var icon = new MQA.Icon('/static/img/blueDot.png', 20, 20);
+        }
+        // set the POI to use the MQA.Icon object instead of its default icon
+        basic.setIcon(icon);
+
+        map.addShape(basic);
+
+        MQA.withModule('shapes', function() {
+            var circle = new MQA.CircleOverlay();
+            circle.radiusUnit = 'KM';
+           // console.log(i);
+            circle.radius = [locations[i].precision/1000];
+            //console.log(locations[i].precision);
+            circle.shapePoints = [locations[i].lat, locations[i].long];
+            circle.color=['#0000FF'];
+
+            // set the alpha transparency of the border
+            circle.colorAlpha = 0.3;
+
+            // set the width of the border
+            circle.borderWidth = 4;
+
+            // set the fill color
+            circle.fillColor = '#0000FF';
+
+            // set the alpha transparency of the fill
+            circle.fillColorAlpha = 0.2;
+
+            map.addShape(circle);
+        });
+
+
+	};
+    });
+
+    setTimeout("loc(map)",1000);
+};
+
+
+  </script>
+ <head>
+    <meta charset="utf-8">
+      <title>Pomidor</title>
+
+       <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body style="height:100%">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle tt grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Friends <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li>    <table class="table table-condensed" id="myTable">
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Nick</th>
+          </tr>
+        </thead>
+     </table></li>
+                <li class="divider"></li>
+                <li id = "addFriend">
+                    <a href="#">
+                        <div>
+                    <form name=myform>
+                        <input type=button value="Add New Friend!" onClick="
+                        s=prompt('Add Your Friend','Friend Nick');
+                         $.getJSON('https://' + domain + ':8443/add/friend/'+s);
+                        alert('Friend '+s+' added!')"
+                    </form></div></a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+ 
+    <div id="map" style="width:96%; height:90%; margin-left:2%;"></div>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/static/js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/static/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>
