@@ -1,0 +1,61 @@
+ <!DOCTYPE html>
+ <html>
+
+ <head>
+    <meta charset="utf-8">
+      <title>Pomidor</title>
+    <link href="../static/css/signin.css" rel="stylesheet">
+       <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+<script>
+    domain = window.location.hostname;
+
+    function register(){
+
+    var userLogin = document.signin.inputLogin.value;
+    var password = document.signin.inputPassword.value;
+
+
+     var xhr = new XMLHttpRequest();
+        var data={};
+        data["username"]=userLogin;
+        data["password"]=password;
+    xhr.open("POST", "https://"+domain+":8443/register/user", true);
+    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+
+        var out={
+            "user_data": [{"password":password, "username":userLogin}]
+        }
+
+        console.log(out);
+        xhr.send(JSON.stringify(out));
+
+
+
+    }
+</script>
+    <div class="container">
+
+      <form class="form-signin" name = "signin">
+        <h2 class="form-signin-heading">Sign up</h2>
+        <label for="inputLogin" class="sr-only">Login</label>
+        <input type="login" id="inputLogin" class="form-control" placeholder="Login" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="register()">Register me!</button>
+      </form>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../static/js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../static/js/bootstrap.min.js"></script>
+</body>
+</html>

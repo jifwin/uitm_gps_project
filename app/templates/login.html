@@ -1,0 +1,48 @@
+ <!DOCTYPE html>
+ <html>
+
+ <head>
+    <meta charset="utf-8">
+      <title>Pomidor</title>
+    <link href="../static/css/signin.css" rel="stylesheet">
+       <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+<script>
+    domain = window.location.hostname;
+    function login(){
+    var userLogin = document.signin.inputLogin.value;
+    var password = document.signin.inputPassword.value;
+    var link= "https://"+userLogin+":"+password+"@"+domain+":8443/index";
+     //   console.log(link);
+    setTimeout(function(){window.location.href = link;},1);
+//        console.log(link);
+    }
+</script>
+    <div class="container">
+
+      <form class="form-signin" name = "signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputLogin" class="sr-only">Login</label>
+        <input type="login" id="inputLogin" class="form-control" placeholder="Login" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="login()">Sign in</button>
+      </form>
+        <div style="align:center;wight:50px;height:50em;border:2px">
+        <a href="/register"><center><h2>Sign Up!</h2></center></a>
+            </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../static/js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../static/js/bootstrap.min.js"></script>
+</body>
+</html>

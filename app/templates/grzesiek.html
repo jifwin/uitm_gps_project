@@ -1,0 +1,18 @@
+<html>
+<head>
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+        domain = window.location.hostname;
+        console.log(domain);
+        $.getJSON('https://' + domain + ':8443/get/id/admin', function(data) {
+            console.log(data)
+        });
+
+    </script>
+
+</body>
+</html>
