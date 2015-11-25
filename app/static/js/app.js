@@ -37,7 +37,7 @@ function drawStops() {
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
           scale: 2
-        },
+        }
       });
     })
   });
