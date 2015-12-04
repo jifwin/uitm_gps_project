@@ -9,9 +9,7 @@ from flask.ext.httpauth import HTTPBasicAuth
 
 from app import app
 
-
 auth = HTTPBasicAuth()
-
 
 def interprete_data(cursor):
     names = list(map(lambda x: x[0], cursor.description))
@@ -21,7 +19,6 @@ def interprete_data(cursor):
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/x-icon')
-
 
 def get_id_by_username(username):
     conn = sqlite3.connect('data.db').cursor()
