@@ -62,7 +62,6 @@ def add_location():
         return 'nie json'
 
     input_json = request.json["location"][0]
-    print input_json
     lat = input_json['lat']
     longi = input_json['longi']
     precision = input_json['precision']
@@ -105,7 +104,6 @@ def add_friend(username):
     user1_id = get_id_by_username(str(auth.username()))
     user2_id = get_id_by_username(str(username))
 
-    print user2_id
     if user1_id is None or user2_id is None:
         return jsonify({"status": "nie"})
     #if exist
@@ -115,12 +113,8 @@ def add_friend(username):
     query2 = conn.execute("select count(*) from friends where user1_id = %s AND user2_id=%s" % (user2_id, user1_id))
     count2 = query2.fetchone()
 
-    print count1[0], count2[0]
     if count1[0] != 0 and count2[0] != 0:
-        print "polaczeni"
         return jsonify({"status": "juz sa"})
-    #print "No None"
-    #print query1.fetchone(), query2.fetchone()
     conn.close()
 
     if user1_id != user2_id:
@@ -133,25 +127,10 @@ def add_friend(username):
     else:
         return jsonify({"status": "nie"})
 
-
-#debug only
 @app.route('/get/id/<string:username>')
 @auth.login_required
 def get_id(username):
     return jsonify({"id": get_id_by_username(str(username))})
-
-
-''' example of register json
-{
-"user_data": [
-{
-"username": "admin",
-"password": "admin"
-}
-]
-}
-'''
-
 
 @app.route('/register/user', methods=['POST'])
 def register_user():
@@ -165,9 +144,8 @@ def register_user():
     conn = sqlite3.connect('data.db')
     query = conn.execute("select count(*) as count from users where username = '%s'" % username)
     response = query.fetchone()[0]
-    print response, type(response)
 
-    if response == 0:  #if no such user yet
+    if response == 0:
         conn.execute("insert into users (username, password, active) values ('%s','%s',0)" % (username, password))
         conn.commit()
         conn.close()
@@ -185,4 +163,3 @@ def login():
 @app.route('/register')
 def register():
     return render_template('register.html')
-
