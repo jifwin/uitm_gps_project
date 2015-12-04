@@ -52,7 +52,7 @@ def last_user(user_id):
     query = conn.execute("select * from locations where user_id = %s order by time desc limit 1" % user_id)
     return jsonify({"locations": interprete_data(query)})
 
-@app.route('/add/location', methods=['GET', 'POST'])  #todo:remove get #wazne
+@app.route('/add/location', methods=['POST'])
 @auth.login_required
 def add_location():
     if not request.json:
