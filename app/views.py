@@ -1,14 +1,14 @@
-from app import app
 import sqlite3
-from flask import jsonify
-from flask import request
-import random
-from flask import render_template
-from flask import send_from_directory
 import os
 
+from flask import jsonify
+from flask import request
+from flask import render_template
+from flask import send_from_directory
 from flask.ext.httpauth import HTTPBasicAuth
-from functools import wraps
+
+from app import app
+
 auth = HTTPBasicAuth()
 
 def interprete_data(cursor):
