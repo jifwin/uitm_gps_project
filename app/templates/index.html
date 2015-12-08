@@ -2,71 +2,87 @@
 
 
 <html style="height:100%">
-  <script src="https://open.mapquestapi.com/sdk/js/v7.0.s/mqa.toolkit.js?key=WGhjrygLwzZbpfGCVebhnFRHBroxJZGY
+<script src="https://open.mapquestapi.com/sdk/js/v7.0.s/mqa.toolkit.js?key=WGhjrygLwzZbpfGCVebhnFRHBroxJZGY
 "></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="/static/js/app.js">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/app.js"></script>
+<script src="/static/js/friendsTableCtrl.js"></script>
 
-  </script>
- <head>
+<head>
     <meta charset="utf-8">
-      <title>Pomidor</title>
+    <title>Pomidor</title>
 
-       <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
-<body style="height:100%">
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
+<body ng-app="mapApp" style="height:100%">
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
         <!-- Brand and toggle tt grouped for better mobile display -->
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Home</a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Home</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Friends <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li>    <table class="table table-condensed" id="myTable">
-        <thead>
-          <tr>
-            <th>Status</th>
-            <th>Nick</th>
-          </tr>
-        </thead>
-     </table></li>
-                <li class="divider"></li>
-                <li id = "addFriend">
-                    <a href="#">
-                        <div>
-                    <form name=myform>
-                        <input type=button value="Add New Friend!" onClick="
-                        s=prompt('Add Your Friend','Friend Nick');
-                         $.getJSON('https://' + domain + ':8443/add/friend/'+s);
-                        alert('Friend '+s+' added!')"
-                    </form></div></a></li>
-              </ul>
-            </li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
- 
-    <div id="map" style="height:80%; margin-left:2%; margin-right:2%;"></div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Friends
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <table class="table table-condensed" id="myTable" ng-controller="friendsTableCtrl">
+                                <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Nick</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="friend in friends">
+                                    <td>
+                                        <img ng-if="friend.active" style="width: 15px" src='/static/img/blueDot.png '/>
+                                        <img ng-if="!friend.active" style="width: 15px" src='/static/img/grayDot.png '/>
+                                    </td>
+                                    <td>{[{friend
+                                        .username}]}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </li>
+                        <li class="divider"></li>
+                        <li id="addFriend">
+                            <a href="#">
+                                <div>
+                                    <form name=myform>
+                                        <input type=button value="Add New Friend!" onClick="
+                        friendNick=prompt('Add Your Friend','Friend Nick');
+                         $.getJSON('/add/friend/'+friendNick);
+                        alert('Friend '+friendNick+' added!')">
+                                    </form>
+                                </div>
+                            </a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
 
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="/static/js/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/static/js/bootstrap.min.js"></script>
+<div id="map" style="height:80%; margin-left:2%; margin-right:2%;"></div>
 
 
 </body>

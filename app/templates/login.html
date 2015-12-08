@@ -14,10 +14,8 @@
     function login(){
     var userLogin = document.signin.inputLogin.value;
     var password = document.signin.inputPassword.value;
-    var link= "https://"+userLogin+":"+password+"@"+domain+":8443/index";
-     //   console.log(link);
+    var link= "http://"+userLogin+":"+password+"@"+domain+":5000/index";
     setTimeout(function(){window.location.href = link;},1);
-//        console.log(link);
     }
 </script>
     <div class="container">
@@ -40,9 +38,7 @@
             </div>
     </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="../static/js/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../static/js/bootstrap.min.js"></script>
 </body>
 </html>

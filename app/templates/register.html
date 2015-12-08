@@ -22,18 +22,15 @@
         var data={};
         data["username"]=userLogin;
         data["password"]=password;
-    xhr.open("POST", "https://"+domain+":8443/register/user", true);
+    xhr.open("POST", "http://"+domain+":5000/register/user", true);
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
         var out={
             "user_data": [{"password":password, "username":userLogin}]
         }
 
-        console.log(out);
         xhr.send(JSON.stringify(out));
-
-
-
+	alert('Registered!');
     }
 </script>
     <div class="container">
